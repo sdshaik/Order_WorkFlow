@@ -15,6 +15,7 @@ builder.Services.AddDbContext<Context>(opts => opts.UseSqlServer(builder.Configu
 builder.Services.AddScoped<IDataRepository<User>, UserManager>();
 builder.Services.AddScoped<IDataRepository<Order>, OrderManager>();
 builder.Services.AddScoped<IDataRepository<Product>, ProductManager>();
+builder.Services.AddScoped<IDataRepository<Payment>, PaymentManager>();
 builder.Services.AddControllers();
 
 

@@ -20,6 +20,8 @@ namespace DAl.Model
 
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Payment> payments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>().HasData(new Order
@@ -41,6 +43,13 @@ namespace DAl.Model
                 Product_Price = 100.1,
                 Product_stock_qun = "10"
 
+            });
+            modelBuilder.Entity<Payment>().HasData(new Payment
+            {
+                Payment_Id = 1,
+                User_id = 1,
+                Paid_Amount = 0.0,
+                Due_Amount = 0.0,
             });
         }
     }

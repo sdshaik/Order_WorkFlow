@@ -158,5 +158,57 @@ namespace Order_WorkFlow.Controllers
             return NoContent();
         }
     }
+    [ApiController]
+    [Route("Payment")]
+    public class PaymentController : ControllerBase
+    {
+        private readonly IDataRepository<Payment> _PaymentRepository;
+        public PaymentController(IDataRepository<Payment> PaymentRepository)
+        {
+            _PaymentRepository = PaymentRepository;
+        }
+        //get all from payment
+        [HttpGet]
+        public IActionResult Get()
+        {
+            IEnumerable<Payment> payments = _PaymentRepository.GetAll();
+            return Ok(payments);
+        }
+        [HttpGet("id")]
+        // get payment by id
+        public IActionResult Getbyid(int id)
+        {
+            Payment payment = _PaymentRepository.GetById(id);
+            if (payment == null)
+            {
+                return NotFound("payment details Not Found");
+            }
+            return Ok(payment);
+
+        }
+        [HttpPost]
+        //Add new Payment
+        public IActionResult Post(Payment payment)
+        {
+            _PaymentRepository.Add(payment);
+            return Ok();
+        }
+        [HttpPut("id")]
+        //Update Payment
+        public IActionResult put(int id, Payment payment)
+        {
+            Payment Paymenttoupdate = _PaymentRepository.GetById(id);
+            _PaymentRepository.Update(Paymenttoupdate, payment);
+            return NoContent();
+        }
+        [HttpDelete("id")]
+        //Delete Payment
+        public IActionResult Delete(int id)
+        {
+            Payment payment = _PaymentRepository.GetById(id);
+            _PaymentRepository.Delete(payment);
+            return NoContent();
+        }
+    }
 
 }

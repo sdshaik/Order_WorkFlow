@@ -44,7 +44,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("Product_Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
 
                     b.HasData(
                         new
@@ -53,6 +53,39 @@ namespace DAL.Migrations
                             Order_Status = "Active",
                             Order_date = new DateTime(2019, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Product_Id = 1
+                        });
+                });
+
+            modelBuilder.Entity("DAl.Model.Payment", b =>
+                {
+                    b.Property<int>("Payment_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Payment_Id"), 1L, 1);
+
+                    b.Property<double>("Due_Amount")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Paid_Amount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("User_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Payment_Id");
+
+                    b.HasIndex("User_id");
+
+                    b.ToTable("payments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Payment_Id = 1,
+                            Due_Amount = 0.0,
+                            Paid_Amount = 0.0,
+                            User_id = 1
                         });
                 });
 
@@ -73,7 +106,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Product_Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -103,7 +136,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("Order_Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -123,6 +156,17 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DAl.Model.Payment", b =>
+                {
+                    b.HasOne("DAl.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("User_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAl.Model.User", b =>

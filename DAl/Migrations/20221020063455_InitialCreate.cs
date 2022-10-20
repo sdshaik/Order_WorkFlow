@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class DALModelContext : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -64,25 +64,56 @@ namespace DAL.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "payments",
+                columns: table => new
+                {
+                    Payment_Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User_id = table.Column<int>(type: "int", nullable: false),
+                    Paid_Amount = table.Column<double>(type: "float", nullable: false),
+                    Due_Amount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_payments", x => x.Payment_Id);
+                    table.ForeignKey(
+                        name: "FK_payments_Users_User_id",
+                        column: x => x.User_id,
+                        principalTable: "Users",
+                        principalColumn: "User_Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Product_Id", "Product_Price", "Product_stock_qun" },
+                table: "products",
+                columns: new[] { "product_id", "product_price", "product_stock_qun" },
                 values: new object[] { 1, 100.09999999999999, "10" });
 
             migrationBuilder.InsertData(
-                table: "Orders",
-                columns: new[] { "Order_id", "Order_Status", "Order_date", "Product_Id" },
-                values: new object[] { 1, "Active", new DateTime(2019, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
+                table: "orders",
+                columns: new[] { "order_id", "order_status", "order_date", "product_id" },
+                values: new object[] { 1, "active", new DateTime(2019, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "User_Id", "Order_Id", "User_Name" },
-                values: new object[] { 1, 1, "ABC" });
+                table: "users",
+                columns: new[] { "user_id", "order_id", "user_name" },
+                values: new object[] { 1, 1, "abc" });
+
+            migrationBuilder.InsertData(
+                table: "payments",
+                columns: new[] { "Payment_Id", "Due_Amount", "Paid_Amount", "User_id" },
+                values: new object[] { 1, 0.0, 0.0, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_Product_Id",
                 table: "Orders",
                 column: "Product_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_payments_User_id",
+                table: "payments",
+                column: "User_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Order_Id",
@@ -92,6 +123,9 @@ namespace DAL.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "payments");
+
             migrationBuilder.DropTable(
                 name: "Users");
 

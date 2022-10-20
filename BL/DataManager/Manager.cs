@@ -104,4 +104,39 @@ namespace BL.DataManager
           _OrderContext.SaveChanges();
         }
     }
+    public class PaymentManager : IDataRepository<Payment>
+    {
+        readonly Context _PaymentContext;
+        public PaymentManager(Context PaymentContext)
+        {
+            _PaymentContext = PaymentContext;
+        }
+        public IEnumerable<Payment> GetAll()
+        {
+            return (IEnumerable<Payment>)_PaymentContext.payments.ToList();
+        }
+        public Payment GetById(int id)
+        {
+            return (Payment)_PaymentContext.payments.FirstOrDefault(X => X.Payment_Id == id);
+        }
+        public void Add(Payment entity)
+        {
+            _PaymentContext.payments.Add(entity);
+            _PaymentContext.SaveChanges();
+        }
+        public void Update(Payment payment,Payment entity)
+        {
+            payment.Payment_Id = entity.Payment_Id;
+            payment.User_id=entity.User_id;
+            payment.Due_Amount = entity.Due_Amount;
+            payment.Paid_Amount=entity.Paid_Amount;
+           
+        }
+        public void Delete(Payment payment)
+        {
+            
+            _PaymentContext.payments.Remove(payment);
+            _PaymentContext.SaveChanges();
+        }
+    }
 }
