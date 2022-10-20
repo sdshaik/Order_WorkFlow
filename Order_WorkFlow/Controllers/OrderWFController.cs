@@ -6,22 +6,22 @@ namespace Order_WorkFlow.Controllers
 {
     [ApiController]
     [Route("User")]
-   public class UserController:ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IDataRepository<User> _userRepository;
         public UserController(IDataRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
-        [HttpGet]
         //get all User
+        [HttpGet]
         public IActionResult Get()
         {
             IEnumerable<User> users = _userRepository.GetAll();
             return Ok(users);
         }
-        [HttpGet("id", Name = " Getbyid")]
-       // get users by id
+        [HttpGet("id")]
+        // get users by id
         public IActionResult Getbyid(int id)
         {
             User user = _userRepository.GetById(id);
@@ -40,17 +40,17 @@ namespace Order_WorkFlow.Controllers
         }
         [HttpPut("id")]
         //Update User
-        public IActionResult put(int id ,User user)
+        public IActionResult put(int id, User user)
         {
-            User usertoupdate=_userRepository.GetById(id) ;
-            _userRepository.Update(usertoupdate,user);
+            User usertoupdate = _userRepository.GetById(id);
+            _userRepository.Update(usertoupdate, user);
             return NoContent();
         }
         [HttpDelete("id")]
         //Delete User
         public IActionResult Delete(int id)
         {
-            User user=_userRepository.GetById(id);
+            User user = _userRepository.GetById(id);
             _userRepository.Delete(user);
             return NoContent();
         }
@@ -71,7 +71,7 @@ namespace Order_WorkFlow.Controllers
             IEnumerable<Order> orders = _OrderRepository.GetAll();
             return Ok(orders);
         }
-        [HttpGet("id", Name = " Getbyid")]
+        [HttpGet("id")]
         //get orders by id
         public IActionResult Getbyid(int id)
         {
@@ -116,13 +116,14 @@ namespace Order_WorkFlow.Controllers
             _ProductRepository = ProductRepository;
         }
         //get all product
+        [HttpGet]
         public IActionResult Get()
         {
             IEnumerable<Product> products = _ProductRepository.GetAll();
             return Ok(products);
         }
-        [HttpGet("id", Name = " Getbyid")]
-       // get product by id
+        [HttpGet("id")]
+        // get product by id
         public IActionResult Getbyid(int id)
         {
             Product product = _ProductRepository.GetById(id);
@@ -131,7 +132,7 @@ namespace Order_WorkFlow.Controllers
                 return NotFound("Product Not Found");
             }
             return Ok(product);
-            
+
         }
         [HttpPost]
         //Add new product
